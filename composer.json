@@ -1,0 +1,44 @@
+{
+    "name": "dzava/resource-iterator",
+    "description": "",
+    "keywords": [
+    ],
+    "homepage": "https://github.com/dzava/resource-iterator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dimitris Zavantias",
+            "email": "dzavantias@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "guzzlehttp/guzzle": "^6.3",
+        "illuminate/support": "^5.7",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "larapack/dd": "^1.0",
+        "phpunit/phpunit": "^7.0",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dzava\\ResourceIterator\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dzava\\ResourceIterator\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
