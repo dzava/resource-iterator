@@ -100,7 +100,10 @@ abstract class ResourceIterator
      *
      * @return bool|string
      */
-    abstract protected function nextPage();
+    protected function nextPage()
+    {
+        throw new \RuntimeException(static::class . " should override 'nextPage' or 'nextPageUrl'");
+    }
 
     /**
      * The url for the next page or false when there are no more pages
