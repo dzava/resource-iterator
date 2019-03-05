@@ -7,10 +7,15 @@ use Illuminate\Support\Str;
 
 abstract class ResourceIterator
 {
+    /** @var int $maxNumberOfRequests */
     protected $maxNumberOfRequests = 0;
+    /** @var int $requestCount */
     protected $requestCount = 0;
+    /** @var \GuzzleHttp\Psr7\Response $lastResponse */
     protected $lastResponse;
+    /** @var string $url */
     protected $url;
+    /** @var Client $client */
     protected $client;
 
     public $config = [
@@ -54,29 +59,6 @@ abstract class ResourceIterator
     }
 
     /**
-     * The value of the 'page' param used to fetch the next page
-     *
-     * @return bool|string
-     */
-    abstract protected function nextPage();
-
-    /**
-     * The url for the next page or false when there are no more pages
-     *
-     * @return bool|string
-     */
-    protected function nextPageUrl()
-    {
-        $nextPage = $this->nextPage();
-
-        if ($nextPage === false) {
-            return false;
-        }
-
-        return $this->setQueryParam($this->url, $this->config['page'], $nextPage);
-    }
-
-    /**
      * The maximum number of requests that may be executed before stopping
      *
      * @param int $max
@@ -103,30 +85,6 @@ abstract class ResourceIterator
     }
 
     /**
-     * Execute the request
-     *
-     * @param string $url
-     * @return mixed
-     */
-    protected function get($url)
-    {
-        $response = json_decode($this->client->get($url)->getBody());
-        $this->lastResponse = $response;
-        $this->requestCount++;
-
-        return $this->parseResponse($response);
-    }
-
-    /**
-     * @param mixed $response
-     * @return array
-     */
-    protected function parseResponse($response)
-    {
-        return object_get($response, $this->config['data'], []);
-    }
-
-    /**
      * @param array $config
      * @return \Dzava\ResourceIterator\ResourceIterator
      */
@@ -135,6 +93,63 @@ abstract class ResourceIterator
         $this->config = array_merge($this->config, $config);
 
         return $this;
+    }
+
+    /**
+     * The value of the 'page' param used to fetch the next page
+     *
+     * @return bool|string
+     */
+    abstract protected function nextPage();
+
+    /**
+     * The url for the next page or false when there are no more pages
+     *
+     * @return bool|string
+     */
+    protected function nextPageUrl()
+    {
+        $nextPage = $this->nextPage();
+
+        if ($nextPage === false) {
+            return false;
+        }
+
+        return $this->setQueryParam($this->url, $this->config['page'], $nextPage);
+    }
+
+    /**
+     * Execute the request
+     *
+     * @param string $url
+     * @return mixed
+     */
+    protected function get($url)
+    {
+        $this->lastResponse = $this->client->get($url);
+        $this->requestCount++;
+
+        return $this->parseResponse();
+    }
+
+    /**
+     * Retrieve the results from the response
+     *
+     * @return array
+     */
+    protected function parseResponse()
+    {
+        return $this->decodedResponse($this->config['data'], []);
+    }
+
+    /**
+     * @param string|null $path
+     * @param mixed|null $default
+     * @return mixed
+     */
+    protected function decodedResponse($path = null, $default = null)
+    {
+        return object_get(json_decode($this->lastResponse->getBody()), $path, $default);
     }
 
     /**
@@ -166,7 +181,7 @@ abstract class ResourceIterator
      */
     protected function getQueryParam($url, $name)
     {
-        preg_match("/[?&]$name=(\d+)+/", $url, $matches);
+        preg_match("/[?&]$name=([^&]+)/", $url, $matches);
 
         return $matches[1] ?? null;
     }

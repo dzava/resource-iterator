@@ -165,7 +165,7 @@ class PagedResourceTest extends TestCase
             ->getMock();
 
         $mockObject
-            ->expects(self::once())
+            ->expects(self::atLeast(1))
             ->method('getBody')
             ->willReturn(json_encode($data));
 

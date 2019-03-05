@@ -16,7 +16,7 @@ class PagedResourceIterator extends ResourceIterator
 
     public function nextPage()
     {
-        if ((object_get($this->lastResponse, $this->config['totalPages'], $this->startPage) - $this->startPage) < $this->requestCount) {
+        if (($this->decodedResponse($this->config['totalPages'], $this->startPage) - $this->startPage) < $this->requestCount) {
             return false;
         }
 
