@@ -50,10 +50,12 @@ class PagedResourceTest extends TestCase
     public function can_start_at_a_page_that_is_not_the_first_one()
     {
         $client = $this->createClient([
-            'users?page=2' => $this->createPaginatedResponseData(2, 3),
-            'users?page=3' => $this->createPaginatedResponseData(3, 3),
+            'users?current_page=2' => $this->createPaginatedResponseData(2, 3),
+            'users?current_page=3' => $this->createPaginatedResponseData(3, 3),
         ]);
-        $this->resource = (new PagedResourceIterator('users?page=2'))->withClient($client);
+        $this->resource = (new PagedResourceIterator('users?current_page=2'))
+            ->withConfig(['page' => 'current_page'])
+            ->withClient($client);
 
         $this->assertEquals(['user 3', 'user 4', 'user 5', 'user 6'], $this->resource->toArray());
     }

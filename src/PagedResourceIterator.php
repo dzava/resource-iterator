@@ -22,4 +22,11 @@ class PagedResourceIterator extends ResourceIterator
 
         return $this->startPage + $this->requestCount;
     }
+
+    public function items()
+    {
+        $this->startPage = $this->getQueryParam($this->url, $this->config['page']) ?? 1;
+
+        return parent::items();
+    }
 }
