@@ -149,7 +149,6 @@ class PagedResourceTest extends TestCase
 
         return [
             'total_pages' => $totalPages,
-            'page' => $currentPage,
             'data' => $data,
         ];
     }

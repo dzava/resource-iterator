@@ -25,7 +25,6 @@ abstract class ResourceIterator
 
     public function __construct($url)
     {
-        $this->client = new Client();
         $this->url = $url;
     }
 
@@ -127,10 +126,20 @@ abstract class ResourceIterator
      */
     protected function get($url)
     {
-        $this->lastResponse = $this->client->get($url);
+        $this->lastResponse = $this->getClient()->get($url);
         $this->requestCount++;
 
         return $this->parseResponse();
+    }
+
+    /**
+     * Get the http client used to perform the requests
+     *
+     * @return \GuzzleHttp\Client
+     */
+    protected function getClient()
+    {
+        return $this->client ?? ($this->client = new Client());
     }
 
     /**
