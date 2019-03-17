@@ -23,12 +23,10 @@ abstract class ResourceIterator
         'data' => 'data',
     ];
 
-    public function __construct($url, $config = [])
+    public function __construct($url)
     {
         $this->client = new Client();
         $this->url = $url;
-
-        $this->withConfig($config);
     }
 
     /**
