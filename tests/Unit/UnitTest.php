@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Dzava\ResourceIterator\Tests\Unit;
 
 use Dzava\ResourceIterator\PagedResourceIterator;
 use Dzava\ResourceIterator\ResourceIterator;
@@ -8,7 +8,7 @@ use Illuminate\Support\Arr;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class PagedResourceTest extends TestCase
+class UnitTest extends TestCase
 {
     /** @var ResourceIterator $resource */
     protected $resource;
