@@ -11,9 +11,9 @@ class IntegrationTest extends TestCase
     /** @var ResourceIterator $resource */
     protected $resource;
 
-    private array $firstPageResults = ['George', 'Janet', 'Emma', 'Eve', 'Charles', 'Tracey'];
-    private array $secondPageResults = ['Michael', 'Lindsay', 'Tobias', 'Byron', 'George', 'Rachel'];
-    private array $allResults;
+    private $firstPageResults = ['George', 'Janet', 'Emma', 'Eve', 'Charles', 'Tracey'];
+    private $secondPageResults = ['Michael', 'Lindsay', 'Tobias', 'Byron', 'George', 'Rachel'];
+    private $allResults;
 
     protected function setUp()
     {
@@ -21,7 +21,7 @@ class IntegrationTest extends TestCase
 
         $this->resource = $this->getPagedResourceIterator('https://reqres.in/api/users');
 
-        $this->allResults = [...$this->firstPageResults, ...$this->secondPageResults];
+        $this->allResults = array_merge($this->firstPageResults, $this->secondPageResults);
     }
 
     /** @test */
