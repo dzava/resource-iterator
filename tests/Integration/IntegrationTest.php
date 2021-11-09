@@ -15,7 +15,7 @@ class IntegrationTest extends TestCase
     private $secondPageResults = ['Michael', 'Lindsay', 'Tobias', 'Byron', 'George', 'Rachel'];
     private $allResults;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
